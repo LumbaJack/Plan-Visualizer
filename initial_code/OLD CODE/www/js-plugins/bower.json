@@ -1,0 +1,29 @@
+{
+	"name": "technical-indicators",
+	"description": "Linear, SMA, EMA and MACD trendlines for Highcharts.",
+	"title": "Technical Indicators",
+	"author": {
+		"name": "Olaf Berge",
+		"url": "www.ohlaugh.com"
+	},
+	"license" : "MIT",
+	"main": [ "technical-indicators.src.js" ],
+	"dependencies": {
+		"highcharts": ">=3.0.0"
+	},
+	"ignore": [
+		".*"
+	],
+	"keywords": [
+		"trendline",
+		"SMA",
+		"EMA",
+		"linear",
+		"MACD",
+		"Moving Average"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/laff/technical-indicators"
+	},
+}

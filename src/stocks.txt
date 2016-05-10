@@ -1,0 +1,8 @@
+[
+    {
+        "symbol": "SPY",
+        "sectype": "STK",
+        "exchange": "SMART",
+        "currency": "USD"
+    }
+]

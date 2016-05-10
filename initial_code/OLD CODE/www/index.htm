@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+
+    <title>Live Trading Tool</title>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<link rel="stylesheet" charset="utf-8" type="text/css" href="css/styles.css"/>
+
+	<script type="text/javascript">
+$(function () {
+	var lastdate = 0;
+    $.getJSON('/get_hist?inter=5%20mins&sym=SPY', function (data) {    
+        lastdate = data[0][data[0].length-1][0];
+
+        macd = []       
+        for (index = 0; index < data[0].length; ++index) {
+            macd.push([data[0][index][0], data[0][index][4]]);
+        }
+
+		var options = {
+			chart: {
+				renderTo: 'container',
+				events : {
+					load : function () {
+
+						// set up the updating of the chart each second
+						var series = this.series;
+						
+						setInterval(function () {
+						   
+						  $.getJSON('/get_update?inter=1%20min&sym=SPY&last=' + lastdate, function (data) {
+							 for (index = 0; index < data[0].length; ++index) {
+							   series[1].addPoint(data[0][index], true, true);
+							   series[0].addPoint([data[0][index][0],data[0][index][4]], true, true);
+							 }
+							 for (index = 0; index < data[1].length; ++index) {
+							   chart.series[5].addPoint(data[1][index], true, true);
+							 }
+							});
+						}, 6000000);
+					}
+				}
+			},
+
+			plotOptions: {
+				candlestick: {
+					color: 'red',
+					upColor: '#66ff00',
+					upLineColor: '#66ff00',
+					lineColor: 'red'
+				}
+			},
+			
+			legend: {
+				enabled: true,
+				shadow: true,
+				itemHoverStyle: {
+					color: '#FF0000'
+				}
+			},
+		
+			title: {
+				text: 'ES Mini Dec. Historical'
+			},
+			
+			tooltip: {
+				headerFormat: '{point.key} ',
+				pointFormat: ' | <span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>',
+				positioner: function () {
+					return { x: 10, y: 76 };
+				},
+				shadow: false
+			},
+			
+			rangeSelector : {
+				buttons : [{
+					type : 'hour',
+					count : 1,
+					text : '1h'
+				},{
+					type : 'hour',
+					count : 2,
+					text : '2h'
+				},{
+					type : 'hour',
+					count : 4,
+					text : '4h'
+				},{
+					type : 'hour',
+					count : 6,
+					text : '6h'
+				},{
+					type : 'hour',
+					count : 8,
+					text : '8h'
+				}, {
+					type : 'all',
+					count : 1,
+					text : 'All'
+				}],
+				selected : 0
+			},
+			
+			yAxis: [{
+				labels: {
+					align: 'left',
+				},
+				title: {
+					text: 'Price'
+				},
+				height: '60%',
+				lineWidth: 2,
+				tickAmount: 16
+			},{
+				labels: {
+					align: 'left',
+				},
+				title: {
+					text: 'Volume'
+				},
+				top: '65%',
+				height: '15%',
+				offset: 0,
+				lineWidth: 2,
+				tickAmount: 6
+			},{
+				labels: {
+					align: 'left',
+				},
+				title: {
+					text: 'MACD'
+				},
+				plotLines: [{
+				   color: '#FF0000',
+				   width: 2,
+				   value: 70
+				},{
+				   color: '#FF0000',
+				   width: 2,
+				   value: 30
+				}],
+				top: '85%',
+				height: '15%',
+				offset: 0,
+				lineWidth: 2,
+				tickAmount: 6
+			}],
+			
+			series: [{
+					type: 'line',
+					name: 'StockLine',
+					data: macd,
+					id: "primary",
+					showInLegend: false,
+					yAxis: 0,
+				},{
+					type: 'candlestick',
+					name: 'ES Mini Dec.',
+					data: data[0],
+					name : 'CandleStick',
+					showInLegend: false,
+				},{
+					name: '10-min SMA',
+					linkedTo: 'primary',
+					showInLegend: true,
+					type: 'trendline',
+					algorithm: 'SMA',
+					periods: 10,
+					yAxis: 0,
+				},{
+					name: '50-min SMA',
+					linkedTo: 'primary',
+					showInLegend: true,
+					type: 'trendline',
+					algorithm: 'SMA',
+					periods: 50,
+					yAxis: 0,
+				},{
+					name: 'Linear Trendline',
+					linkedTo: 'primary',
+					showInLegend: true,
+					type: 'trendline',
+					algorithm: 'linear',
+					visible: false
+				},{
+					type: 'column',
+					name: 'Volume',
+					showInLegend: true,
+					data: data[1],
+					yAxis: 1,
+				},{
+					name : 'MACD',
+					linkedTo: 'primary',
+					yAxis: 2,
+					showInLegend: true,
+					type: 'trendline',
+					algorithm: 'MACD'
+				},{
+					name : 'Signal line',
+					linkedTo: 'primary',
+					yAxis: 2,
+					showInLegend: true,
+					type: 'trendline',
+					algorithm: 'signalLine'
+				},{
+					name: 'Histogram',
+					linkedTo: 'primary',
+					yAxis: 2,
+					showInLegend: true,
+					type: 'histogram'
+
+				},{
+					name: 'RSI',
+					data: data[2],
+					yAxis: 2,
+					showInLegend: true,
+					type: 'line',
+					visible: false
+				},{
+					name: 'ADX(14)',
+					data: data[3],
+					yAxis: 1,
+					showInLegend: true,
+					type: 'line',
+					visible: false
+				},{
+					name: 'ADX(pos)',
+					data: data[4],
+					yAxis: 1,
+					showInLegend: true,
+					type: 'line',
+					visible: false
+				},{
+					name: 'ADX(neg)',
+					data: data[5],
+					yAxis: 1,
+					showInLegend: true,
+					type: 'line',
+					visible: false
+				},{
+					name: 'Resistance Line',
+					data: data[5],
+					yAxis: 0,
+					showInLegend: true,
+					type: 'line',
+					visible: false
+				},{
+					name: 'Support Line',
+					data: data[6],
+					yAxis: 0,
+					showInLegend: true,
+					type: 'line',
+					visible: false
+				}
+			]
+		};
+
+		var chart = new Highcharts.StockChart(options);
+
+		//Find patterns obj
+		for (i=0;i<data.length;i++) {
+			if(typeof(data[i])=== "object" && data[i].Patterns != undefined) 
+			    var Patterns = data[i].Patterns;
+		
+		}
+		if(Patterns != undefined) { 
+			for (i=0; i< Patterns.length;i++) {
+				chart.xAxis[0].addPlotBand({
+					from: Patterns[i].ixd[0],
+					to: Patterns[i].ixd[5],
+					color: '#FCFFC5',
+					text: Patterns[i].name,
+					id: 'plot-band-' + i
+				});
+			}
+		}
+		
+	});
+});
+    </script>
+</head>
+
+<body>
+	<div id="container" style="height: 750px; width: 100%"></div>
+    <script src="js/highstock.js"></script>
+	<script src="js/annotations.js"></script>
+	<script src="js/themes/dark-unica.js"></script>
+	<script src="js-plugins/technical-indicators.src.js"></script>
+</body>
+</html>

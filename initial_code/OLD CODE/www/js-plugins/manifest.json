@@ -1,0 +1,40 @@
+{
+	"name": "technical-indicators",
+	"version": "1.0.3",
+	"title": "Technical Indicators",
+	"author": {
+		"name": "Olaf Berge",
+		"url": "www.ohlaugh.com"
+	},
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "https://github.com/laff/technical-indicators/blob/master/LICENSE"
+		}
+	],
+	"dependencies": {
+		"highcharts": ">=3.0.0"
+	},
+	"description": "Linear, SMA, EMA and MACD trendlines.",
+	"keywords": [
+		"trendline",
+		"SMA",
+		"EMA",
+		"linear",
+		"MACD",
+		"Moving Average"
+	],
+	"docs": "https://github.com/laff/technical-indicators/blob/master/README.md",
+	"demo": [
+		"http://jsfiddle.net/laff/etW3K/",
+		"http://jsfiddle.net/laff/WaEBc/",
+		"http://jsfiddle.net/laff/U6HMA/",
+		"http://jsfiddle.net/laff/SRfW6/"
+	],
+	"maintainers": [
+		{
+			"name": "Olaf Berge",
+			"email": "ohlaughbrg@gmail.com"
+		}
+	]	
+}

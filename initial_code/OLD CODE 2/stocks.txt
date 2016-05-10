@@ -1,0 +1,41 @@
+[
+    {
+        "symbol": "ES",
+        "sectype": "FUT",
+        "exchange": "GLOBEX",
+        "currency": "USD",
+        "expiry": "20160318"
+    },{
+        "symbol": "GC",
+        "sectype": "FUT",
+        "exchange": "NYMEX",
+        "currency": "USD",
+        "expiry": "20160127"
+    },{
+        "symbol": "NQ",
+        "sectype": "FUT",
+        "exchange": "GLOBEX",
+        "currency": "USD",
+        "expiry": "20160318"
+    },{
+        "symbol": "SPX",
+        "sectype": "IND",
+        "exchange": "CBOE",
+        "currency": "USD"
+    },{
+        "symbol": "NDX",
+        "sectype": "IND",
+        "exchange": "NASDAQ",
+        "currency": "USD"
+    },{
+        "symbol": "RUT",
+        "sectype": "IND",
+        "exchange": "RUSSELL",
+        "currency": "USD"
+    },{
+        "symbol": "SPY",
+        "sectype": "STK",
+        "exchange": "SMART",
+        "currency": "USD"
+    }
+]
